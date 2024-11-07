@@ -1,5 +1,4 @@
 galaxy_info:
-  role_name: docker_traefik
   author: dzangolab
   description: Installs traefik proxy and other useful services as docker containers
   company: Dzango Technologies Limited

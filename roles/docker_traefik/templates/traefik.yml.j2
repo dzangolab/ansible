@@ -49,7 +49,7 @@ services:
       placement:
         constraints:
           - "node.labels.{{ traefik__label }} == true"
-          - node.role == manager
+          - "node.role == manager"
       restart_policy:
         condition: on-failure
         delay: 5s

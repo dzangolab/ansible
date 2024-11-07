@@ -1,5 +1,4 @@
 galaxy_info:
-  role_name: docker-portainer
   author: Olivier Pichon <op@dzango.com>
   description: Installs portainer server and agentas docker containers
   company: Dzango Technologies Limited
