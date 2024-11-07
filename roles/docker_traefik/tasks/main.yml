@@ -1,0 +1,80 @@
+---
+- name: Ensure traefik data directory exist
+  become: true
+  file:
+    group: "{{ traefik__deploy_group }}"
+    owner: "{{ traefik__deploy_user }}"
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+  with_items:
+    - "{{ traefik__deploy_dir }}"
+    - "{{ traefik__acme_dir }}"
+    - "{{ traefik__log_dir }}"
+
+- name: Copy files
+  become: true
+  template:
+    dest: "{{ traefik__deploy_dir }}/traefik.yml"
+    group: "{{ traefik__deploy_group }}"
+    owner: "{{ traefik__deploy_user }}"
+    src: "templates/traefik-http.yml.j2"
+  when:
+    - traefik__state == "started"
+    - traefik__http_only
+
+- name: Copy files
+  become: true
+  template:
+    dest: "{{ traefik__deploy_dir }}/traefik.yml"
+    group: "{{ traefik__deploy_group }}"
+    owner: "{{ traefik__deploy_user }}"
+    src: "templates/traefik.yml.j2"
+  when:
+    - traefik__state == "started"
+    - not traefik__http_only
+
+- name: Copy acme file
+  become: true
+  template:
+    dest: "{{ traefik__acme_dir }}/acme.json"
+    force: "no"
+    group: "{{ traefik__deploy_group }}"
+    mode: 0600
+    owner: "{{ traefik__deploy_user }}"
+    src: "files/acme.json"
+  when:
+    - traefik__state == "started"
+    - not traefik__http_only
+
+- name: Setup logrotate
+  become: true
+  blockinfile:
+    path: "/etc/logrotate.d/traefik"
+    block: |
+      /{{ traefik__log_dir }}/*.log {
+        compress
+        create 0644 {{ traefik__deploy_user }} {{ traefik__deploy_group }}
+        daily
+        dateext
+        dateformat -%Y%m%d
+        missingok
+        notifempty
+        postrotate
+          docker kill --signal="USR1" $(docker ps | grep traefik | awk '{print $1}')
+        endscript
+        rotate 5
+      }
+    create: true
+
+- name: Start traefik
+  command: docker stack deploy -c traefik.yml traefik
+  args:
+    chdir: "{{ traefik__deploy_dir }}"
+  when: traefik__state == "started"
+
+- name: Stop traefik
+  command: docker stack rm traefik
+  args:
+    chdir: "{{ traefik__deploy_dir }}"
+  when: traefik__state == "stopped"

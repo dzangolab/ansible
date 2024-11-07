@@ -1,0 +1,34 @@
+traefik__access_log_format: "json"
+traefik__acme_caserver: "https://acme-v02.api.letsencrypt.org/directory"
+traefik__acme_dir: "{{ traefik__deploy_dir }}/acme"
+traefik__acme_email: ""
+traefik__acme_staging: false
+traefik__api_insecure: false
+
+traefik__dashboard: true
+traefik__dashboard_basicauth_passwords: []
+traefik__debug: false
+traefik__deploy_dir: /mnt/data/traefik
+traefik__deploy_group: www-data
+traefik__deploy_user: www-data
+traefik__dns:
+  - 1.1.1.1
+  - 8.8.8.8
+traefik__domain: ""
+
+traefik__expose_by_default: false
+
+traefik__http_only: false
+
+traefik__image: "traefik:v3.1.4"
+
+traefik__label: traefik
+traefik__log_dir: "{{traefik__deploy_dir}}/logs"
+traefik__log_format: "common"
+traefik__log_level: ERROR
+
+traefik__network: public 
+  
+traefik__refresh: 15
+
+traefik__state: started

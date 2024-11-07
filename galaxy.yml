@@ -5,7 +5,7 @@
 namespace: dzangolab
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: dzangolab-ansible-collection 
+name: ansible
 
 # The version of the collection. Must be compatible with semantic versioning
 version: 0.1.0

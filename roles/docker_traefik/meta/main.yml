@@ -1,0 +1,23 @@
+galaxy_info:
+  role_name: docker_traefik
+  author: dzangolab
+  description: Installs traefik proxy and other useful services as docker containers
+  company: Dzango Technologies Limited
+
+  license: MIT
+
+  min_ansible_version: 2.17.6
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+  galaxy_tags:
+    - docker
+    - traefik
+
+  dependencies: []

@@ -1,0 +1,58 @@
+version: "3.2"
+
+networks:
+  {{ portainer__network }}:
+    external: true
+
+services:
+  agent:
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.platform.os == linux
+    image: portainer/agent:{{ portainer__version }}
+    networks:
+      - "{{ portainer__network }}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+
+  server:
+    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    deploy:
+{% if traefik %}
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network={{ portainer__network }}"
+        - "traefik.http.routers.portainer-http.entrypoints=web"
+        - "traefik.http.routers.portainer-http.middlewares=https-redirect"
+        - "traefik.http.routers.portainer-http.rule=Host(`{{ portainer__domain }}`)"
+        - "traefik.http.routers.portainer-https.entrypoints=websecure"
+        - "traefik.http.routers.portainer-https.rule=Host(`{{ portainer__domain }}`)"
+        - "traefik.http.routers.portainer-https.tls=true"
+        - "traefik.http.routers.portainer-https.tls.certresolver=le"
+        - "traefik.http.routers.portainer-https.tls.domains[0].main={{ portainer__domain }}"
+        - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+        - "traefik.http.routers.portainer-https.service=portainer"
+{% endif %}
+      mode: replicated
+      placement:
+        constraints:
+          - "node.labels.{{ portainer__label }} == true"
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    image: portainer/portainer-ce:{{ portainer__version }}
+    networks:
+      - {{ portainer__network }}
+    ports:
+      - "9443:9443"
+      - "9000:9000"
+      - "8000:8000"
+    volumes:
+      - {{ portainer__data_dir }}:/data
