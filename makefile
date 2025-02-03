@@ -14,7 +14,7 @@ install.local:
 
 publish:
 	@printf "\033[0;32m>>> Install collection locally\033[0m\n"
-	ansible-galaxy collection publish dzangolab-ansible-0.1.0.tar.gz --token $TOKEN
+	ansible-galaxy collection publish dzangolab-ansible-0.2.0.tar.gz --token $TOKEN
 
 upgrade:
 	@printf "\033[0;32m>>> Upgrade collection from galaxy server\033[0m\n"
