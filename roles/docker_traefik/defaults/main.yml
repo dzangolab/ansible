@@ -20,7 +20,7 @@ traefik__expose_by_default: false
 
 traefik__http_only: false
 
-traefik__image: "traefik:v3.2.0"
+traefik__image: "traefik:v3.3.3"
 
 traefik__label: traefik
 traefik__log_dir: "{{traefik__deploy_dir}}/logs"
