@@ -1,5 +1,10 @@
 ---
-- name: Ensure portainer data directory exist
+- name: Set portainer volume directory for NFS usage
+  set_fact:
+    portainer__volume_dir: "{{ portainer__nfs_volume_dir }}"
+  when: use_nfs_server
+
+- name: Ensure portainer directories exist
   become: true
   file:
     group: "{{ portainer__deploy_group }}"
@@ -9,7 +14,7 @@
     recurse: yes
   with_items:
     - "{{ portainer__deploy_dir }}"
-    - "{{ portainer__data_dir }}"
+    - "{{ portainer__volume_dir }}"
 
 - name: Copy files
   become: true
@@ -19,6 +24,14 @@
     owner: "{{ portainer__deploy_user }}"
     src: "templates/portainer.yml.j2"
   when: portainer__state == "started"
+
+- name: Debug portainer variables
+  debug:
+    msg:
+      - "portainer__deploy_dir: {{ portainer__deploy_dir }}"
+      - "portainer__volume_dir: {{ portainer__volume_dir }}"
+      - "portainer__state: {{ portainer__state }}"
+      - "nfs__ip: {{ nfs__ip }}"
 
 - name: Start portainer
   command: docker stack deploy -c portainer.yml portainer

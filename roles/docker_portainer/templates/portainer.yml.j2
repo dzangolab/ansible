@@ -55,4 +55,13 @@ services:
       - "9000:9000"
       - "8000:8000"
     volumes:
-      - {{ portainer__data_dir }}:/data
+      - type: volume
+        source: portainer_data
+        target: /data
+
+volumes:
+  portainer_data:
+    driver_opts:
+      type: 'nfs'
+      o: 'addr={{ nfs__ip }},nfsvers=4,rw'
+      device: ':/mnt/nfs/portainer'
