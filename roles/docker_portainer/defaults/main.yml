@@ -1,5 +1,5 @@
-portainer__volume_dir: "{{ portainer__deploy_dir }}"  # Defaults to deploy_dir
-portainer__data_dir: "{{ portainer__volume_dir }}/data"
+portainer__volume_dir: "{{ portainer__data_dir }}"  # Defaults to data_dir
+portainer__data_dir: "{{ portainer__deploy_dir }}/data"
 portainer__deploy_dir: /mnt/data/portainer
 portainer__deploy_group: root
 portainer__deploy_user: root

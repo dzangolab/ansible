@@ -64,4 +64,4 @@ volumes:
     driver_opts:
       type: 'nfs'
       o: 'addr={{ nfs__ip }},nfsvers=4,rw'
-      device: ':/mnt/nfs/portainer'
+      device: ':{{ portainer__volume_dir }}'
