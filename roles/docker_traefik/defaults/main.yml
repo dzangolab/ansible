@@ -32,3 +32,9 @@ traefik__network: public
 traefik__refresh: 15
 
 traefik__state: started
+
+
+use_nfs_server: false
+nfs__ip: 0.0.0.0
+traefik__acme_nfs_volume_dir: "/mnt/nfs/traefik/acme"
+traefik__log_nfs_volume_dir: "/mnt/nfs/traefik/log"

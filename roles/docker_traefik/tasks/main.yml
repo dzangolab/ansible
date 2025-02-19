@@ -67,6 +67,22 @@
       }
     create: true
 
+- name: Set traefik volume directory for NFS usage
+  set_fact:
+    traefik__acme_dir: "{{ traefik__acme_nfs_volume_dir }}"
+    traefik__log_dir: "{{ traefik__log_nfs_volume_dir }}"
+  when: use_nfs_server
+
+- name: Debug traefik variables
+  debug:
+    msg:
+      - "traefik__deploy_dir: {{ traefik__deploy_dir }}"
+      - "traefik__log_dir: {{ traefik__log_dir }}"
+      - "traefik__acme_dir: {{ traefik__acme_dir }}"
+      - "traefik__state: {{ traefik__state }}"
+      - "nfs__ip: {{ nfs__ip }}"
+
+
 - name: Start traefik
   command: docker stack deploy -c traefik.yml traefik
   args:
