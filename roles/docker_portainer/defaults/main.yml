@@ -1,4 +1,5 @@
-portainer__volume_dir: "{{ portainer__data_dir }}"  # Defaults to data_dir
+nfs__ip: 0.0.0.0
+
 portainer__data_dir: "{{ portainer__deploy_dir }}/data"
 portainer__deploy_dir: /mnt/data/portainer
 portainer__deploy_group: root
@@ -8,9 +9,9 @@ portainer__network: public
 
 portainer__state: started
 
+portainer__use_nfs: false
+
 portainer__version: 2.21.5
+portainer__volume_dir: "/mnt/nfs/portainer"
 
 traefik: true
-use_nfs_server: false
-nfs__ip: 0.0.0.0
-portainer__nfs_volume_dir: "/mnt/nfs/portainer"
