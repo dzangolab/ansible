@@ -22,6 +22,19 @@
   when:
     - traefik__state == "started"
     - traefik__http_only
+    - not traefik__use_nfs
+
+- name: Copy files
+  become: true
+  template:
+    dest: "{{ traefik__deploy_dir }}/traefik.yml"
+    group: "{{ traefik__deploy_group }}"
+    owner: "{{ traefik__deploy_user }}"
+    src: "templates/traefik-http-nfs.yml.j2"
+  when:
+    - traefik__state == "started"
+    - traefik__http_only
+    - traefik__use_nfs
 
 - name: Copy files
   become: true
@@ -33,6 +46,19 @@
   when:
     - traefik__state == "started"
     - not traefik__http_only
+    - not traefik__use_nfs
+
+- name: Copy files
+  become: true
+  template:
+    dest: "{{ traefik__deploy_dir }}/traefik.yml"
+    group: "{{ traefik__deploy_group }}"
+    owner: "{{ traefik__deploy_user }}"
+    src: "templates/traefik-nfs.yml.j2"
+  when:
+    - traefik__state == "started"
+    - not traefik__http_only
+    - traefik__use_nfs
 
 - name: Copy acme file
   become: true
@@ -66,12 +92,6 @@
         rotate 5
       }
     create: true
-
-- name: Set traefik volume directory for NFS usage
-  set_fact:
-    traefik__acme_dir: "{{ traefik__acme_nfs_volume_dir }}"
-    traefik__log_dir: "{{ traefik__log_nfs_volume_dir }}"
-  when: use_nfs_server
 
 - name: Debug traefik variables
   debug:
