@@ -1,4 +1,4 @@
-nfs__ip: 0.0.0.0
+portainer__nfs_ip: 0.0.0.0
 
 portainer__data_dir: "{{ portainer__deploy_dir }}/data"
 portainer__deploy_dir: /mnt/data/portainer
