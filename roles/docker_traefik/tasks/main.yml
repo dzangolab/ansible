@@ -22,19 +22,6 @@
   when:
     - traefik__state == "started"
     - traefik__http_only
-    - not traefik__use_nfs
-
-- name: Copy files
-  become: true
-  template:
-    dest: "{{ traefik__deploy_dir }}/traefik.yml"
-    group: "{{ traefik__deploy_group }}"
-    owner: "{{ traefik__deploy_user }}"
-    src: "templates/traefik-http-nfs.yml.j2"
-  when:
-    - traefik__state == "started"
-    - traefik__http_only
-    - traefik__use_nfs
 
 - name: Copy files
   become: true
@@ -46,19 +33,6 @@
   when:
     - traefik__state == "started"
     - not traefik__http_only
-    - not traefik__use_nfs
-
-- name: Copy files
-  become: true
-  template:
-    dest: "{{ traefik__deploy_dir }}/traefik.yml"
-    group: "{{ traefik__deploy_group }}"
-    owner: "{{ traefik__deploy_user }}"
-    src: "templates/traefik-nfs.yml.j2"
-  when:
-    - traefik__state == "started"
-    - not traefik__http_only
-    - traefik__use_nfs
 
 - name: Copy acme file
   become: true
@@ -100,7 +74,7 @@
       - "traefik__log_dir: {{ traefik__log_dir }}"
       - "traefik__acme_dir: {{ traefik__acme_dir }}"
       - "traefik__state: {{ traefik__state }}"
-      - "nfs__ip: {{ nfs__ip }}"
+      - "traefik__nfs_ip: {{ traefik__nfs_ip }}"
 
 
 - name: Start traefik
