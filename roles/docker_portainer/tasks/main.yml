@@ -1,5 +1,5 @@
 ---
-- name: Ensure portainer data directory exist
+- name: Ensure portainer directories exist
   become: true
   file:
     group: "{{ portainer__deploy_group }}"
@@ -9,7 +9,9 @@
     recurse: yes
   with_items:
     - "{{ portainer__deploy_dir }}"
+{% if not portainer__use_nfs %}
     - "{{ portainer__data_dir }}"
+{% endif %}
 
 - name: Copy files
   become: true
@@ -18,7 +20,8 @@
     group: "{{ portainer__deploy_group }}"
     owner: "{{ portainer__deploy_user }}"
     src: "templates/portainer.yml.j2"
-  when: portainer__state == "started"
+  when: 
+    - portainer__state == "started"
 
 - name: Start portainer
   command: docker stack deploy -c portainer.yml portainer

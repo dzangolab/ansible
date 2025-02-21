@@ -72,6 +72,29 @@ services:
         published: 443
         mode: ingress
     volumes:
+{% if traefik__use_nfs %}
+      - type: volume
+        source: traefik_acme
+        target: /etc/traefik
+      - type: volume
+        source: traefik_log
+        target: /var/log/traefik
+{% else %}
       - "{{ traefik__acme_dir }}:/etc/traefik"
       - "{{ traefik__log_dir }}:/var/log/traefik"
+{% endif %}
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+{% if traefik__use_nfs %}
+volumes:
+  traefik_acme:
+    driver_opts:
+      type: 'nfs'
+      o: 'addr={{ traefik__nfs_ip }},nfsvers=4,rw'
+      device: ':{{ traefik__nfs_acme_dir }}'
+  traefik_log:
+    driver_opts:
+      type: 'nfs'
+      o: 'addr={{ traefik__nfs_ip }},nfsvers=4,rw'
+      device: ':{{ traefik__nfs_log_dir }}'
+{% endif %}
