@@ -48,7 +48,7 @@
   when:
     - traefik__state == "started"
     - not traefik__http_only
-    - not gtraefik__use_nfs
+    - not traefik__use_nfs
 
 - name: Setup logrotate
   become: true
@@ -69,6 +69,8 @@
         rotate 5
       }
     create: true
+  when:
+    - not traefik__use_nfs
 
 - name: Start traefik
   command: docker stack deploy -c traefik.yml traefik
