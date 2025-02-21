@@ -9,8 +9,10 @@
     recurse: true
   with_items:
     - "{{ traefik__deploy_dir }}"
+{% if not traefik__use_nfs %}
     - "{{ traefik__acme_dir }}"
     - "{{ traefik__log_dir }}"
+{% endif %}
 
 - name: Copy files
   become: true
@@ -46,6 +48,7 @@
   when:
     - traefik__state == "started"
     - not traefik__http_only
+    - not gtraefik__use_nfs
 
 - name: Setup logrotate
   become: true
