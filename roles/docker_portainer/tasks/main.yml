@@ -12,18 +12,17 @@
     - "{{ portainer__data_dir }}"
   when: not portainer__use_nfs
 
-# - name: Ensure portainer directories exist
-#   become: true
-#   file:
-#     group: "{{ portainer__deploy_group }}"
-#     owner: "{{ portainer__deploy_user }}"
-#     path: "{{ item }}"
-#     state: directory
-#     recurse: yes
-#   with_items:
-#     - "{{ portainer__deploy_dir }}"
-#     - "{{ portainer__nfs_volume_dir }}"
-#   when: portainer__use_nfs
+- name: Ensure portainer directories exist
+  become: true
+  file:
+    group: "{{ portainer__deploy_group }}"
+    owner: "{{ portainer__deploy_user }}"
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ portainer__deploy_dir }}"
+  when: portainer__use_nfs
 
 - name: Copy files
   become: true
@@ -34,14 +33,6 @@
     src: "templates/portainer.yml.j2"
   when: 
     - portainer__state == "started"
-
-- name: Debug portainer variables
-  debug:
-    msg:
-      - "portainer__deploy_dir: {{ portainer__deploy_dir }}"
-      - "portainer__nfs_data_dir: {{ portainer__nfs_data_dir }}"
-      - "portainer__state: {{ portainer__state }}"
-      - "portainer__nfs_ip: {{ portainer__nfs_ip }}"
 
 - name: Start portainer
   command: docker stack deploy -c portainer.yml portainer
