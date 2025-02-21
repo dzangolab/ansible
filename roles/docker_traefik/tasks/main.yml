@@ -9,10 +9,8 @@
     recurse: true
   with_items:
     - "{{ traefik__deploy_dir }}"
-{% if not traefik__use_nfs %}
-    - "{{ traefik__acme_dir }}"
-    - "{{ traefik__log_dir }}"
-{% endif %}
+    - "{{ traefik__acme_dir if not traefik__use_nfs else [] }}"
+    - "{{ traefik__log_dir if not traefik__use_nfs else [] }}"
 
 - name: Copy files
   become: true
@@ -71,6 +69,15 @@
     create: true
   when:
     - not traefik__use_nfs
+
+- name: Debug traefik variables
+  debug:
+    msg:
+      - "traefik__deploy_dir: {{ traefik__deploy_dir }}"
+      - "traefik__log_dir: {{ traefik__log_dir }}"
+      - "traefik__acme_dir: {{ traefik__acme_dir }}"
+      - "traefik__state: {{ traefik__state }}"
+      - "traefik__nfs_ip: {{ traefik__nfs_ip }}"
 
 - name: Start traefik
   command: docker stack deploy -c traefik.yml traefik
