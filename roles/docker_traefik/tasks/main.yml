@@ -67,16 +67,6 @@
       }
     create: true
 
-- name: Debug traefik variables
-  debug:
-    msg:
-      - "traefik__deploy_dir: {{ traefik__deploy_dir }}"
-      - "traefik__log_dir: {{ traefik__log_dir }}"
-      - "traefik__acme_dir: {{ traefik__acme_dir }}"
-      - "traefik__state: {{ traefik__state }}"
-      - "traefik__nfs_ip: {{ traefik__nfs_ip }}"
-
-
 - name: Start traefik
   command: docker stack deploy -c traefik.yml traefik
   args:
