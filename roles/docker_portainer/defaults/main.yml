@@ -12,6 +12,6 @@ portainer__state: started
 
 portainer__use_nfs: false
 
-portainer__version: 2.27.0
+portainer__version: 2.27
 
 traefik: true
