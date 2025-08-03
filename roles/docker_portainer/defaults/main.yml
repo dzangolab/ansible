@@ -3,8 +3,11 @@ portainer__deploy_dir: /mnt/data/portainer
 portainer__deploy_group: root
 portainer__deploy_user: root
 
-portainer__network: public
+portainer__image: portainer/portainer-ce
 
+portainer__label: false
+
+portainer__network: public
 portainer__nfs_ip: 0.0.0.0
 portainer__nfs_data_dir: "/mnt/nfs/portainer"
 
@@ -12,6 +15,6 @@ portainer__state: started
 
 portainer__use_nfs: false
 
-portainer__version: 2.27
+portainer__version: latest
 
 traefik: true

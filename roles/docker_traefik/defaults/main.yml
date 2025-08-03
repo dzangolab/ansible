@@ -20,9 +20,9 @@ traefik__expose_by_default: false
 
 traefik__http_only: false
 
-traefik__image: "traefik:v3.4"
+traefik__image: "traefik"
 
-traefik__label: traefik
+traefik__label: false
 traefik__log_dir: "{{traefik__deploy_dir}}/logs"
 traefik__log_format: "common"
 traefik__log_level: ERROR
@@ -38,3 +38,5 @@ traefik__refresh: 15
 traefik__state: started
 
 traefik__use_nfs: false
+
+traefik__version: latest

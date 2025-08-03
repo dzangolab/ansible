@@ -30,14 +30,16 @@ services:
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
       placement:
         constraints:
+{% if traefik__label %}
           - "node.labels.{{ traefik__label }} == true"
+{% endif %}
           - node.role == manager
       restart_policy:
         condition: on-failure
         delay: 5s
         max_attempts: 3
         window: 120s
-    image: "{{ traefik__image }}"
+    image: "{{ traefik__image }}:{{ traefik__version }}"
     networks:
       - "{{ traefik__network }}"
     ports:
