@@ -8,12 +8,12 @@ portainer__image: portainer/portainer-ce
 portainer__label: false
 
 portainer__network: public
+
+portainer__nfs: false
 portainer__nfs_ip: 0.0.0.0
 portainer__nfs_data_dir: "/mnt/nfs/portainer"
 
 portainer__state: started
-
-portainer__use_nfs: false
 
 portainer__version: latest
 

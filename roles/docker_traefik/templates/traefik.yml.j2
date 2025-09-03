@@ -74,7 +74,7 @@ services:
         published: 443
         mode: ingress
     volumes:
-{% if traefik__use_nfs %}
+{% if traefik__nfs %}
       - type: volume
         source: traefik_acme
         target: /etc/traefik
@@ -87,7 +87,7 @@ services:
 {% endif %}
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-{% if traefik__use_nfs %}
+{% if traefik__nfs %}
 volumes:
   traefik_acme:
     driver_opts:
