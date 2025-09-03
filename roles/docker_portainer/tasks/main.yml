@@ -9,7 +9,7 @@
     recurse: yes
   with_items:
     - "{{ portainer__deploy_dir }}"
-    - "{{ portainer__data_dir if not portainer__use_nfs else [] }}"
+    - "{{ portainer__data_dir if not portainer__nfs else [] }}"
 
 - name: Copy files
   become: true

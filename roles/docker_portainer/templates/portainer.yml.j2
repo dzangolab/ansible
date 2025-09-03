@@ -57,7 +57,7 @@ services:
       - "9000:9000"
       - "8000:8000"
     volumes:
-{% if portainer__use_nfs %}
+{% if portainer__nfs %}
       - type: volume
         source: portainer_data
         target: /data
@@ -65,7 +65,7 @@ services:
       - {{ portainer__data_dir }}:/data
 {% endif %}
 
-{% if portainer__use_nfs %}
+{% if portainer__nfs %}
 volumes:
   portainer_data:
     driver_opts:
