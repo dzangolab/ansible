@@ -2,43 +2,32 @@
 - name: Ensure ansible directories exist
   become: true
   file:
-    group: "{{ ansible_link__deploy_group }}"
-    owner: "{{ ansible_link__deploy_user }}"
+    group: "{{ ansible-link__deploy_group }}"
+    owner: "{{ ansible-link__deploy_user }}"
     path: "{{ item }}"
     state: directory
     recurse: yes
   with_items:
-    - "{{ ansible_link__deploy_dir }}"
-    - "{{ ansible_link__group_vars_dir if not ansible_link__nfs else [] }}"
-    - "{{ ansible_link__playbooks_dir if not ansible_link__nfs else [] }}"
-
-- name: Ensure ansible inventory file exists
-  become: true
-  file:
-    group: "{{ ansible_link__deploy_group }}"
-    owner: "{{ ansible_link__deploy_user }}"
-    path: "{{ ansible_link__inventory_file }}"
-    state: file
-    mode: "0666"
+    - "{{ ansible-link__deploy_dir }}"
 
 - name: Copy files
   become: true
   template:
-    dest: "{{ ansible_link__deploy_dir }}/ansible_link.yml"
-    group: "{{ ansible_link__deploy_group }}"
-    owner: "{{ ansible_link__deploy_user }}"
-    src: "templates/ansible_link.yml.j2"
+    dest: "{{ ansible-link__deploy_dir }}/ansible-link.yml"
+    group: "{{ ansible-link__deploy_group }}"
+    owner: "{{ ansible-link__deploy_user }}"
+    src: "templates/ansible-link.yml.j2"
   when: 
-    - ansible_link__state == "started"
+    - ansible-link__state == "started"
 
-- name: Start ansible_link
-  command: docker stack deploy -c ansible_link.yml ansible_link
+- name: Start ansible-link
+  command: docker stack deploy -c ansible-link.yml ansible-link
   args:
-    chdir: "{{ ansible_link__deploy_dir }}"
-  when: ansible_link__state == "started"
+    chdir: "{{ ansible-link__deploy_dir }}"
+  when: ansible-link__state == "started"
 
-- name: Stop ansible_link
-  command: docker stack rm ansible_link
+- name: Stop ansible-link
+  command: docker stack rm ansible-link
   args:
-    chdir: "{{ ansible_link__deploy_dir }}"
-  when: ansible_link__state == "stopped"
+    chdir: "{{ ansible-link__deploy_dir }}"
+  when: ansible-link__state == "stopped"

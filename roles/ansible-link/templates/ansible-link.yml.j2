@@ -59,7 +59,7 @@ services:
 {% if ansible-link__nfs %}
     volumes:
       - type: volume
-        source: ansible-link_data
+        source: ansible-link_dir
         target: /etc/ansible
 {% else %}
       - {{ ansible-link__data_dir }}:/data
@@ -67,9 +67,9 @@ services:
 
 {% if ansible-link__nfs %}
 volumes:
-  ansible-link_data:
+  ansible-link_dir:
     driver_opts:
       type: 'nfs'
       o: 'addr={{ ansible-link__nfs_ip }},nfsvers=4,rw'
-      device: ':{{ ansible-link__nfs_data_dir }}'
+      device: ':{{ ansible-link__delpoy_dir }}'
 {% endif %}
