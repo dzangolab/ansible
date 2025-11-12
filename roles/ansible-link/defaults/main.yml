@@ -1,20 +1,26 @@
-ansible-link__data_dir: "{{ ansible-link__deploy_dir }}/data"
-ansible-link__deploy_dir: /mnt/data/ansible-link
-ansible-link__deploy_group: root
-ansible-link__deploy_user: root
 
-ansible-link__image: ansible-link/ansible-link-ce
+ansible_link__deploy_dir: /mnt/data/ansible_link
+ansible_link__deploy_group: root
+ansible_link__deploy_user: root
 
-ansible-link__label: false
+ansible_link__image: python:3.9-slim
 
-ansible-link__network: public
+ansible_link__inventory_file: "{{ ansible_link__deploy_dir }}/hosts"
 
-ansible-link__nfs: false
-ansible-link__nfs_ip: 0.0.0.0
-ansible-link__nfs_data_dir: "/mnt/nfs/ansible-link"
+ansible_link__label: false
 
-ansible-link__state: started
+ansible_link__group-vars_dir: "{{ ansible_link__deploy_dir }}/group-vars"
 
-ansible-link__version: latest
+ansible_link__network: public
+
+ansible_link__playbooks_dir: "{{ ansible_link__deploy_dir }}/plays"
+
+ansible_link__nfs: false
+ansible_link__nfs_ip: 0.0.0.0
+ansible_link__nfs_data_dir: "/mnt/nfs/ansible_link"
+
+ansible_link__state: started
+
+ansible_link__version: latest
 
 traefik: true
