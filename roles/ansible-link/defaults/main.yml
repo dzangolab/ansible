@@ -5,19 +5,13 @@ ansible_link__deploy_user: root
 
 ansible_link__image: python:3.9-slim
 
-ansible_link__inventory_file: "{{ ansible_link__deploy_dir }}/hosts"
-
 ansible_link__label: false
-
-ansible_link__group-vars_dir: "{{ ansible_link__deploy_dir }}/group-vars"
 
 ansible_link__network: public
 
-ansible_link__playbooks_dir: "{{ ansible_link__deploy_dir }}/plays"
-
 ansible_link__nfs: false
 ansible_link__nfs_ip: 0.0.0.0
-ansible_link__nfs_data_dir: "/mnt/nfs/ansible_link"
+ansible_link__nfs_dir: "/mnt/nfs/ansible_link"
 
 ansible_link__state: started
 
