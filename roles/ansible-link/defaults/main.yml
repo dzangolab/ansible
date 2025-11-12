@@ -1,0 +1,20 @@
+ansible-link__data_dir: "{{ ansible-link__deploy_dir }}/data"
+ansible-link__deploy_dir: /mnt/data/ansible-link
+ansible-link__deploy_group: root
+ansible-link__deploy_user: root
+
+ansible-link__image: ansible-link/ansible-link-ce
+
+ansible-link__label: false
+
+ansible-link__network: public
+
+ansible-link__nfs: false
+ansible-link__nfs_ip: 0.0.0.0
+ansible-link__nfs_data_dir: "/mnt/nfs/ansible-link"
+
+ansible-link__state: started
+
+ansible-link__version: latest
+
+traefik: true
