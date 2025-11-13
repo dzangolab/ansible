@@ -20,6 +20,15 @@
   when: 
     - ansible-link__state == "started"
 
+- name: Copy custom config.yml template
+  become: true
+  template:
+    dest: "{{ ansible_link__deploy_dir }}/config.yml"
+    group: "{{ ansible_link__deploy_group }}"
+    owner: "{{ ansible_link__deploy_user }}"
+    src: "templates/config.yml.j2"
+  when: ansible_link__state == "started"
+
 - name: Start ansible-link
   command: docker stack deploy -c ansible-link.yml ansible-link
   args:
