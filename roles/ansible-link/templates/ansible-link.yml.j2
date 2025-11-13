@@ -18,7 +18,7 @@ services:
         pip3 install -r requirements.txt &&
         pip3 install gunicorn &&
         # Replace default config with custom config
-        cp /etc/ansible/config.yml /app/config.yml &&
+        cp {{ ansible_link__nfs_dir }}/config.yml config.yml &&
         # Start the API
         python3 -m gunicorn --workers 1 --bind 0.0.0.0:5001 wsgi:application
       "
@@ -67,10 +67,9 @@ services:
 {% else %}
       - {{ ansible_link__deploy_dir }}/data:/data
 {% endif %}
-      # Mount custom config file
       - type: bind
         source: {{ ansible_link__deploy_dir }}/config.yml
-        target: /etc/ansible/config.yml
+        target: {{ ansible_link__nfs_dir }}/config.yml
         read_only: true
 
 {% if ansible_link__nfs %}

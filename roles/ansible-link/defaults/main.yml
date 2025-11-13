@@ -1,4 +1,23 @@
 
+ansible_link_config:
+  host: '127.0.0.1'
+  port: 5001
+  debug: false
+  suppress_ansible_output: false
+  omit_event_data: false
+  only_failed_event_data: false
+  metrics_port: 9091  
+  playbook_dir: '/etc/ansible/playbooks'
+  inventory_file: '/etc/ansible/hosts'
+  job_storage_dir: '/tmp/ansible-link-jobs'
+  log_level: 'INFO'
+  playbook_whitelist: []
+  # Optional webhook configuration
+  webhook:
+    url: ""
+    type: ""
+  #   timeout: 5
+  
 ansible_link__deploy_dir: /mnt/data/ansible_link
 ansible_link__deploy_group: root
 ansible_link__deploy_user: root
@@ -22,22 +41,3 @@ ansible_link__webhook_type: ""
 ansible_link__webhook_url: ""
 
 traefik: true
-
-ansible_link_config:
-  host: '127.0.0.1'
-  port: 5001
-  debug: false
-  suppress_ansible_output: false
-  omit_event_data: false
-  only_failed_event_data: false
-  metrics_port: 9091  
-  playbook_dir: '/etc/ansible/playbooks'
-  inventory_file: '/etc/ansible/hosts'
-  job_storage_dir: '/tmp/ansible-link-jobs'
-  log_level: 'INFO'
-  playbook_whitelist: []
-  # Optional webhook configuration
-  webhook:
-    url: ""
-    type: ""
-  #   timeout: 5
