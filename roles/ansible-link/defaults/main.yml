@@ -37,7 +37,7 @@ ansible_link_config:
   log_level: 'INFO'
   playbook_whitelist: []
   # Optional webhook configuration
-  # webhook:
-  #   url: ""
-  #   type: ""
+  webhook:
+    url: ""
+    type: ""
   #   timeout: 5
