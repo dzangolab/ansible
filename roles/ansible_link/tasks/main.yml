@@ -1,0 +1,42 @@
+---
+- name: Ensure ansible directories exist
+  become: true
+  file:
+    group: "{{ ansible_link__deploy_group }}"
+    owner: "{{ ansible_link__deploy_user }}"
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ ansible_link__deploy_dir }}"
+
+- name: Copy files
+  become: true
+  template:
+    dest: "{{ ansible_link__deploy_dir }}/ansible_link.yml"
+    group: "{{ ansible_link__deploy_group }}"
+    owner: "{{ ansible_link__deploy_user }}"
+    src: "templates/ansible-link.yml.j2"
+  when: 
+    - ansible_link__state == "started"
+
+- name: Copy custom config.yml template
+  become: true
+  template:
+    dest: "{{ ansible_link__deploy_dir }}/config.yml"
+    group: "{{ ansible_link__deploy_group }}"
+    owner: "{{ ansible_link__deploy_user }}"
+    src: "templates/config.yml.j2"
+  when: ansible_link__state == "started"
+
+- name: Start ansible_link
+  command: docker stack deploy -c ansible_link.yml ansible_link
+  args:
+    chdir: "{{ ansible_link__deploy_dir }}"
+  when: ansible_link__state == "started"
+
+- name: Stop ansible_link
+  command: docker stack rm ansible_link
+  args:
+    chdir: "{{ ansible_link__deploy_dir }}"
+  when: ansible_link__state == "stopped"

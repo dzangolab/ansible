@@ -7,7 +7,6 @@ networks:
 services:
   ansible-link:
     image: python:3.9-slim
-    container_name: ansible-link
     command: >
       sh -c "
         # Install dependencies
@@ -51,7 +50,6 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    image: {{ ansible_link__image }}:{{ ansible_link__version }}
     networks:
       - {{ ansible_link__network }}
     ports:
