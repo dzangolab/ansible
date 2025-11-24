@@ -7,6 +7,10 @@ networks:
 services:
   ansible-link:
     image: python:3.9-slim
+    environment:
+      - ANSIBLE_CONFIG=/etc/ansible-link/ansible.cfg
+      - ANSIBLE_PRIVATE_KEY_FILE=/etc/ansible-link/config/ssh_key
+      - ANSIBLE_HOST_KEY_CHECKING=False
     command: >
       sh -c "
         # Install dependencies
@@ -17,9 +21,9 @@ services:
         pip3 install -r requirements.txt &&
         pip3 install gunicorn &&
         # Replace default config with custom config
-        cp /etc/ansible/config.yml config.yml &&
+        cp /etc/ansible-link/config.yml config.yml &&
         # Start the API
-        python3 -m gunicorn --workers 1 --bind 0.0.0.0:5001 wsgi:application
+        exec python3 -m gunicorn --workers 1 --bind 0.0.0.0:5001 wsgi:application
       "
     deploy:
 {% if traefik %}
@@ -61,13 +65,13 @@ services:
 {% if ansible_link__nfs %}
       - type: volume
         source: ansible-link_dir
-        target: /etc/ansible
+        target: /etc/ansible-link
 {% else %}
       - {{ ansible_link__deploy_dir }}/data:/data
 {% endif %}
       - type: bind
         source: {{ ansible_link__deploy_dir }}/config.yml
-        target: /etc/ansible/config.yml
+        target: /etc/ansible-link/config.yml
         read_only: true
 
 {% if ansible_link__nfs %}

@@ -9,6 +9,8 @@
     recurse: yes
   with_items:
     - "{{ ansible_link__deploy_dir }}"
+  when: 
+    - ansible_link__state == "started"
 
 - name: Copy files
   become: true
