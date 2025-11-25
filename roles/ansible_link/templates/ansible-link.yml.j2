@@ -9,7 +9,7 @@ services:
     image: python:3.9-slim
     environment:
       - ANSIBLE_CONFIG=/etc/ansible-link/ansible.cfg
-      - ANSIBLE_PRIVATE_KEY_FILE=/etc/ansible-link/config/ssh_key
+      - ANSIBLE_PRIVATE_KEY_FILE=/etc/ansible-link/ssh_key
       - ANSIBLE_HOST_KEY_CHECKING=False
     command: >
       sh -c "
@@ -23,7 +23,7 @@ services:
         # Replace default config with custom config
         cp /etc/ansible-link/config.yml config.yml &&
         # Start the API
-        exec python3 -m gunicorn --workers 1 --bind 0.0.0.0:5001 wsgi:application
+        python3 -m gunicorn --workers 1 --bind 0.0.0.0:5001 wsgi:application
       "
     deploy:
 {% if traefik %}
@@ -72,6 +72,14 @@ services:
       - type: bind
         source: {{ ansible_link__deploy_dir }}/config.yml
         target: /etc/ansible-link/config.yml
+        read_only: true
+      - type: bind
+        source: {{ ansible_link__deploy_dir }}/hosts
+        target: /etc/ansible-link/hosts
+        read_only: true
+      - type: bind
+        source: {{ ansible_link__deploy_dir }}/ssh-config
+        target: /etc/ansible-link/ssh-config
         read_only: true
 
 {% if ansible_link__nfs %}
