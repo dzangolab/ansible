@@ -1,8 +1,16 @@
-version: "3.2"
+version: "3.3"
 
 networks:
   {{ ansible_link__network }}:
     external: true
+
+configs:
+  ansible_link_config:
+    file: ./config.yml
+  ansible_link_hosts:
+    file: ./hosts.yml
+  ansible_link_ssh_config:
+    file: ./ssh-config.yml
 
 services:
   ansible-link:
@@ -21,10 +29,21 @@ services:
         pip3 install -r requirements.txt &&
         pip3 install gunicorn &&
         # Replace default config with custom config
-        cp /etc/ansible-link/config.yml config.yml &&
+        cp /tmp/config.yml /config.yml &&
+        cp -n /config.yml /etc/ansible-link/config.yml &&
+        cp -n /hosts /etc/ansible-link/hosts &&
+        mkdir /root/.ssh/ &&
+        cp -n /ssh-config /root/.ssh/config  &&
         # Start the API
         python3 -m gunicorn --workers 1 --bind 0.0.0.0:5001 wsgi:application
       "
+    configs:
+      - source: ansible_link_config
+        target: /tmp/config.yml
+      - source: ansible_link_hosts
+        target: hosts
+      - source: ansible_link_ssh_config
+        target: ssh-config
     deploy:
 {% if traefik %}
       labels:
@@ -69,18 +88,6 @@ services:
 {% else %}
       - {{ ansible_link__deploy_dir }}/data:/data
 {% endif %}
-      - type: bind
-        source: {{ ansible_link__deploy_dir }}/config.yml
-        target: /etc/ansible-link/config.yml
-        read_only: true
-      - type: bind
-        source: {{ ansible_link__deploy_dir }}/hosts
-        target: /etc/ansible-link/hosts
-        read_only: true
-      - type: bind
-        source: {{ ansible_link__deploy_dir }}/ssh-config
-        target: /etc/ansible-link/ssh-config
-        read_only: true
 
 {% if ansible_link__nfs %}
 volumes:
