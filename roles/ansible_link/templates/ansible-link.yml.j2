@@ -57,8 +57,10 @@ services:
         - "traefik.http.routers.ansible-link-https.tls=true"
         - "traefik.http.routers.ansible-link-https.tls.certresolver=le"
         - "traefik.http.routers.ansible-link-https.tls.domains[0].main={{ ansible_link__domain }}"
-        - "traefik.http.services.ansible-link.loadbalancer.server.port=9000"
+        - "traefik.http.services.ansible-link.loadbalancer.server.port=5001"
         - "traefik.http.routers.ansible-link-https.service=ansible-link"
+        - "traefik.http.middlewares.ansible-auth.basicauth.users={{ ansible_link__basicauth_passwords | join(',') }}"
+        - "traefik.http.routers.ansible-link-https.middlewares=ansible-auth"
 {% endif %}
       mode: replicated
       placement:
@@ -79,7 +81,7 @@ services:
       - target: 5001
         published: 5001
         protocol: tcp
-        mode: host
+        mode: ingress
     volumes:
 {% if ansible_link__nfs %}
       - type: volume

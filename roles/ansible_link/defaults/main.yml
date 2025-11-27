@@ -1,4 +1,5 @@
 ansible_link__bastion_ip: 0.0.0.0
+ansible_link__basicauth_passwords: []
 
 ansible_link__config_debug: false
 ansible_link__config_host: '127.0.0.1'
