@@ -1,0 +1,42 @@
+ansible_link__bastion_ip: 0.0.0.0
+ansible_link__basicauth_passwords: []
+
+ansible_link__config_debug: false
+ansible_link__config_host: '127.0.0.1'
+ansible_link__config_inventory_file: '/etc/ansible-link/hosts'
+ansible_link__config_job_storage_dir: '/tmp/ansible-link-jobs'
+ansible_link__config_metrics_port: 9091
+ansible_link__config_omit_event_data: false
+ansible_link__config_only_failed_event_data: false
+ansible_link__config_port: 5001
+ansible_link__config_suppress_ansible_output: false
+ansible_link__config_playbook_dir: '/etc/ansible-link/playbooks'
+ansible_link__config_log_level: 'INFO'
+ansible_link__config_playbook_whitelist: []
+ansible_link__config_ansible_link__config_url: ""
+ansible_link__config_ansible_link__config_type: ""
+ansible_link__config_timeout: 5
+
+ansible_link__deploy_dir: /mnt/data/ansible-link
+ansible_link__deploy_group: root
+ansible_link__deploy_user: root
+
+ansible_link__image: python:3.9-slim
+
+ansible_link__label: false
+
+ansible_link__network: public
+
+ansible_link__nfs: false
+ansible_link__nfs_ip: 0.0.0.0
+ansible_link__nfs_dir: "/mnt/nfs/ansible-link"
+
+ansible_link__state: started
+
+ansible_link__version: latest
+
+ansible_link__webhook: false
+ansible_link__webhook_type: ""
+ansible_link__webhook_url: ""
+
+traefik: true
