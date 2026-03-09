@@ -34,6 +34,8 @@ traefik__nfs_acme_dir: "/mnt/nfs/traefik/acme"
 traefik__nfs_ip: 0.0.0.0
 traefik__nfs_log_dir: "/mnt/nfs/traefik/log"
 
+traefik__read_timeout: "3600s"
+
 traefik__refresh: 15
 
 traefik__state: started
