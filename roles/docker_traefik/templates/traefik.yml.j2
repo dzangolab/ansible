@@ -21,6 +21,7 @@ services:
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.transport.respondingTimeouts.readTimeout={{ traefik__read_timeout }}"
       - "--log.filePath=/var/log/traefik/traefik.log"
       - "--log.format={{ traefik__log_format }}"
       - "--log.level={{ traefik__log_level }}"
