@@ -68,11 +68,11 @@ volumes:
   traefik_acme:
     driver_opts:
       type: 'nfs'
-      o: 'addr={{ traefik__nfs_ip }},nfsvers=4,rw'
+      o: '{{ traefik__nfs_o }}'
       device: ':{{ traefik__nfs_acme_dir }}'
   traefik_log:
     driver_opts:
       type: 'nfs'
-      o: 'addr={{ traefik__nfs_ip }},nfsvers=4,rw'
+      o: '{{ traefik__nfs_o }}'
       device: ':{{ traefik__nfs_log_dir }}'
 {% endif %}

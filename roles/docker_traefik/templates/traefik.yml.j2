@@ -36,6 +36,7 @@ services:
         - "traefik.http.middlewares.auth.basicauth.users={{ traefik__dashboard_basicauth_passwords | join(',') }}"
         - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
         - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
+        - "traefik.http.middlewares.https-redirect.headers.customrequestheaders.X-Forwarded-Proto=https"
         - "traefik.http.routers.traefik-http.entrypoints=web"
         - "traefik.http.routers.traefik-http.middlewares=https-redirect"
         - "traefik.http.routers.traefik-http.rule=Host(`{{ traefik__domain }}`)"
@@ -93,11 +94,11 @@ volumes:
   traefik_acme:
     driver_opts:
       type: 'nfs'
-      o: 'addr={{ traefik__nfs_ip }},nfsvers=4,rw'
+      o: '{{ traefik__nfs_o }}'
       device: ':{{ traefik__nfs_acme_dir }}'
   traefik_log:
     driver_opts:
       type: 'nfs'
-      o: 'addr={{ traefik__nfs_ip }},nfsvers=4,rw'
+      o: '{{ traefik__nfs_o }}'
       device: ':{{ traefik__nfs_log_dir }}'
 {% endif %}

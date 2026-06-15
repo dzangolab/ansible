@@ -77,7 +77,7 @@
       - "traefik__log_dir: {{ traefik__log_dir }}"
       - "traefik__acme_dir: {{ traefik__acme_dir }}"
       - "traefik__state: {{ traefik__state }}"
-      - "traefik__nfs_ip: {{ traefik__nfs_ip }}"
+      - "traefik__nfs_server: {{ traefik__nfs_server }}"
 
 - name: Start traefik
   command: docker stack deploy -c traefik.yml traefik
