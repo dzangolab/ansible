@@ -1,0 +1,30 @@
+name: Publish to Ansible Galaxy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Install ansible-core
+        run: pip install ansible-core
+
+      - name: Read version from galaxy.yml
+        id: version
+        run: echo "version=$(grep '^version:' galaxy.yml | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - name: Build collection
+        run: ansible-galaxy collection build
+
+      - name: Publish to Ansible Galaxy
+        run: ansible-galaxy collection publish dzangolab-ansible-${{ steps.version.outputs.version }}.tar.gz --api-key "${{ secrets.ANSIBLE_GALAXY_API_KEY }}"
