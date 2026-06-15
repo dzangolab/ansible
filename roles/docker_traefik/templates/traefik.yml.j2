@@ -1,5 +1,4 @@
 # {{ ansible_managed }}
-version: "3.7"
 
 networks:
   {{ traefik__network }}:
@@ -36,7 +35,6 @@ services:
         - "traefik.http.middlewares.auth.basicauth.users={{ traefik__dashboard_basicauth_passwords | join(',') }}"
         - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
         - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
-        - "traefik.http.middlewares.https-redirect.headers.customrequestheaders.X-Forwarded-Proto=https"
         - "traefik.http.routers.traefik-http.entrypoints=web"
         - "traefik.http.routers.traefik-http.middlewares=https-redirect"
         - "traefik.http.routers.traefik-http.rule=Host(`{{ traefik__domain }}`)"
