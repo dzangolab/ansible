@@ -67,12 +67,12 @@ services:
 volumes:
   traefik_acme:
     driver_opts:
-      type: 'nfs'
-      o: '{{ traefik__nfs_o }}'
-      device: ':{{ traefik__nfs_acme_dir }}'
+      type: "nfs"
+      o: "{{ traefik__nfs_o }}"
+      device: ":{{ traefik__nfs_acme_dir }}"
   traefik_log:
     driver_opts:
-      type: 'nfs'
-      o: '{{ traefik__nfs_o }}'
-      device: ':{{ traefik__nfs_log_dir }}'
+      type: "nfs"
+      o: "{{ traefik__nfs_o }}"
+      device: ":{{ traefik__nfs_log_dir }}"
 {% endif %}
