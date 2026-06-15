@@ -92,11 +92,13 @@ services:
 {% if traefik__nfs %}
 volumes:
   traefik_acme:
+    driver: local
     driver_opts:
       type: "nfs"
       o: "{{ traefik__nfs_o }}"
       device: ":{{ traefik__nfs_acme_dir }}"
   traefik_log:
+    driver: local
     driver_opts:
       type: "nfs"
       o: "{{ traefik__nfs_o }}"
