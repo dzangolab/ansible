@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Olivier Pichon <op@dzango.com>
+  description: Installs ansible-link
+  company: Dzango Technologies Limited
+
+  license: MIT
+
+  min_ansible_version: 2.17.6
+
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+
+  galaxy_tags:
+    - docker
+    - ansible-link
+
+dependencies: []
