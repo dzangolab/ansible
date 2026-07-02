@@ -1,0 +1,25 @@
+galaxy_info:
+  author: dzangolab
+  description: Deploys lego as a Docker Swarm service for automated TLS certificate management via ACME DNS-01
+  company: Dzango Technologies Limited
+
+  license: MIT
+
+  min_ansible_version: 2.17.6
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+  galaxy_tags:
+    - docker
+    - lego
+    - acme
+    - tls
+    - cloudflare
+
+  dependencies: []

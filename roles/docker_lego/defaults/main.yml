@@ -1,0 +1,19 @@
+lego__caserver: "https://acme-v02.api.letsencrypt.org/directory"
+lego__cloudflare_token_secret: cloudflare-dns-token
+lego__image: dzangolab/lego
+lego__deploy_dir: /mnt/data/lego
+lego__deploy_group: root
+lego__deploy_user: root
+lego__dns_provider: cloudflare
+lego__dns_resolvers:
+  - 8.8.8.8:53
+  - 1.1.1.1:53
+lego__email: ""
+
+lego__certs_dir: "{{ lego__deploy_dir }}/certs"
+lego__hooks_dir: "{{ lego__deploy_dir }}/hooks"
+lego__path: "{{ lego__deploy_dir }}/data"
+
+lego__renew_days: 30
+lego__state: started
+lego__version: "5.2.2"

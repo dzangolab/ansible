@@ -1,0 +1,30 @@
+#!/bin/sh
+# {{ ansible_managed }}
+# Obtains a new certificate for the given domain via DNS-01 (Cloudflare).
+# The client must add:
+#   _acme-challenge.<subdomain>.client.com  CNAME  _acme-challenge.<subdomain>.dzango.tech
+# (one CNAME per subdomain hosted on this swarm)
+#
+# Run via: docker exec $(docker ps -q -f name=lego_lego) sh /hooks/lego-add-domain.sh <domain>
+set -e
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <domain>"
+  exit 1
+fi
+
+DOMAIN="$1"
+
+# docker exec bypasses the entrypoint, so expand the secret manually
+CLOUDFLARE_DNS_API_TOKEN=$(cat /run/secrets/{{ lego__cloudflare_token_secret }})
+export CLOUDFLARE_DNS_API_TOKEN
+
+lego \
+  --path /lego \
+  --email "{{ lego__email }}" \
+  --dns {{ lego__dns_provider }} \
+  --dns.resolvers {{ lego__dns_resolvers | join(',') }} \
+  --server "{{ lego__caserver }}" \
+  run \
+  --domains "${DOMAIN}" \
+  --run-hook /hooks/traefik-cert-update.sh

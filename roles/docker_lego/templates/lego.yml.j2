@@ -1,0 +1,44 @@
+# {{ ansible_managed }}
+
+secrets:
+  {{ lego__cloudflare_token_secret }}:
+    external: true
+
+services:
+  lego:
+    image: "{{ lego__image }}:{{ lego__version }}"
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+
+        while true; do
+          lego \
+            --path /lego \
+            --email "{{ lego__email }}" \
+            --dns {{ lego__dns_provider }} \
+            --dns.resolvers {{ lego__dns_resolvers | join(',') }} \
+            --server "{{ lego__caserver }}" \
+            renew \
+            --days {{ lego__renew_days }} \
+            --run-hook /hooks/traefik-cert-update.sh \
+          || echo "lego renew failed, will retry in 24h"
+          sleep 86400
+        done
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role == manager"
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+    environment:
+      - CLOUDFLARE_DNS_API_TOKEN_FILE=/run/secrets/{{ lego__cloudflare_token_secret }}
+    secrets:
+      - "{{ lego__cloudflare_token_secret }}"
+    volumes:
+      - "{{ lego__path }}:/lego"
+      - "{{ lego__certs_dir }}:/certs"
+      - "{{ lego__hooks_dir }}:/hooks"

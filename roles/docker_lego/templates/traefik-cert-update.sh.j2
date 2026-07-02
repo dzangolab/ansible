@@ -1,0 +1,19 @@
+#!/bin/sh
+# {{ ansible_managed }}
+# Called by lego after each certificate is obtained or renewed.
+# Runs inside the lego container: /certs is the Traefik file-provider dir,
+# /etc/traefik/certs is the same directory as seen inside the Traefik container.
+set -e
+
+DOMAIN="${LEGO_CERT_DOMAIN}"
+
+cp "${LEGO_CERT_PATH}"     "/certs/${DOMAIN}.crt"
+cp "${LEGO_CERT_KEY_PATH}" "/certs/${DOMAIN}.key"
+chmod 600 "/certs/${DOMAIN}.key"
+
+cat > "/certs/${DOMAIN}.yml" << EOF
+tls:
+  certificates:
+    - certFile: /etc/traefik/certs/${DOMAIN}.crt
+      keyFile: /etc/traefik/certs/${DOMAIN}.key
+EOF

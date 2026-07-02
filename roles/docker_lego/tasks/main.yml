@@ -1,0 +1,50 @@
+---
+- name: Ensure lego directories exist
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ lego__deploy_user }}"
+    group: "{{ lego__deploy_group }}"
+    mode: "0700"
+  with_items:
+    - "{{ lego__deploy_dir }}"
+    - "{{ lego__path }}"
+    - "{{ lego__hooks_dir }}"
+    - "{{ lego__certs_dir if lego__certs_dir else [] }}"
+
+- name: Install cert-update hook script
+  become: true
+  template:
+    src: templates/traefik-cert-update.sh.j2
+    dest: "{{ lego__hooks_dir }}/traefik-cert-update.sh"
+    owner: "{{ lego__deploy_user }}"
+    group: "{{ lego__deploy_group }}"
+    mode: "0755"
+
+- name: Install add-domain script
+  become: true
+  template:
+    src: templates/lego-add-domain.sh.j2
+    dest: "{{ lego__hooks_dir }}/lego-add-domain.sh"
+    owner: "{{ lego__deploy_user }}"
+    group: "{{ lego__deploy_group }}"
+    mode: "0755"
+
+- name: Copy lego stack file
+  become: true
+  template:
+    src: templates/lego.yml.j2
+    dest: "{{ lego__deploy_dir }}/lego.yml"
+    owner: "{{ lego__deploy_user }}"
+    group: "{{ lego__deploy_group }}"
+
+- name: Start lego
+  command: docker stack deploy -c lego.yml lego
+  args:
+    chdir: "{{ lego__deploy_dir }}"
+  when: lego__state == "started"
+
+- name: Stop lego
+  command: docker stack rm lego
+  when: lego__state == "stopped"
