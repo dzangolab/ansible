@@ -1,5 +1,5 @@
 lego__caserver: "https://acme-v02.api.letsencrypt.org/directory"
-lego__cloudflare_token_secret: cloudflare-dns-token
+lego__cloudflare_token_secret: cloudflare-dns-api-token
 lego__image: dzangolab/lego
 lego__deploy_dir: /mnt/data/lego
 lego__deploy_group: root

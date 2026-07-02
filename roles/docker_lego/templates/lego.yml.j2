@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 secrets:
-  {{ lego__cloudflare_token_secret }}:
+  "{{ lego__cloudflare_token_secret }}":
     external: true
 
 services:
@@ -35,7 +35,7 @@ services:
         condition: on-failure
         delay: 10s
     environment:
-      - CLOUDFLARE_DNS_API_TOKEN_FILE=/run/secrets/{{ lego__cloudflare_token_secret }}
+      - "CLOUDFLARE_DNS_API_TOKEN_FILE=/run/secrets/{{ lego__cloudflare_token_secret }}"
     secrets:
       - "{{ lego__cloudflare_token_secret }}"
     volumes:
